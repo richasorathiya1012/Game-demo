@@ -1,0 +1,157 @@
+import React, { useState } from "react";
+
+export default function App() {
+  const [step, setStep] = useState(0);
+  const [risk, setRisk] = useState(0);
+  const [log, setLog] = useState([]);
+
+  const addLog = (text) => {
+    setLog((prev) => [...prev, text]);
+  };
+
+  const next = () => setStep(step + 1);
+
+  const handleChoice = (type) => {
+    if (type === "safe") {
+      addLog("✔ Safe decision made. System stability increased.");
+    } else {
+      setRisk(risk + 1);
+      addLog("⚠ Risky action detected. Nexus Core is learning your behavior.");
+    }
+    next();
+  };
+
+  const restart = () => {
+    setStep(0);
+    setRisk(0);
+    setLog([]);
+  };
+
+  return (
+    <div style={styles.container}>
+      <h1>🌆 Nexus City</h1>
+      <p>Digital Identity Simulation Prototype</p>
+
+      <div style={styles.box}>
+        {step === 0 && (
+          <>
+            <h2>Welcome to Nexus City</h2>
+            <p>
+              You are Alex Rivera, a new citizen. Your digital identity is being
+              created in the NEX-ID system.
+            </p>
+            <button onClick={next}>Initialize Identity</button>
+          </>
+        )}
+
+        {step === 1 && (
+          <>
+            <h2>Smart Setup</h2>
+            <p>
+              The system requests access to your camera, location, and contacts
+              for "better experience".
+            </p>
+
+            <button onClick={() => handleChoice("safe")}>
+              Deny unnecessary permissions
+            </button>
+
+            <button onClick={() => handleChoice("risky")}>
+              Accept all permissions
+            </button>
+          </>
+        )}
+
+        {step === 2 && (
+          <>
+            <h2>Suspicious Message</h2>
+            <p>
+              You receive an urgent message:
+              "Your account will be locked. Verify here immediately."
+            </p>
+
+            <button onClick={() => handleChoice("safe")}>
+              Verify through official app
+            </button>
+
+            <button onClick={() => handleChoice("risky")}>
+              Click external link
+            </button>
+          </>
+        )}
+
+        {step === 3 && (
+          <>
+            <h2>City Behavior Tracking</h2>
+            <p>
+              Nexus Core is analyzing your activity patterns...
+            </p>
+
+            <button onClick={() => handleChoice("safe")}>
+              Limit data sharing
+            </button>
+
+            <button onClick={() => handleChoice("risky")}>
+              Allow full tracking for convenience
+            </button>
+          </>
+        )}
+
+        {step === 4 && (
+          <>
+            <h2>System Outcome</h2>
+
+            {risk >= 2 ? (
+              <p>
+                🔴 Nexus Core has built a full profile of you. Your identity is
+                now controlled by the system.
+              </p>
+            ) : (
+              <p>
+                🟢 You maintained partial control of your digital identity.
+                Nexus Core influence is limited.
+              </p>
+            )}
+
+            <button onClick={restart}>Restart Simulation</button>
+          </>
+        )}
+      </div>
+
+      <div style={styles.logBox}>
+        <h3>System Log</h3>
+        {log.map((l, i) => (
+          <p key={i}>{l}</p>
+        ))}
+      </div>
+
+      <p style={{ marginTop: 20 }}>
+        Risk Level: {risk} / 3
+      </p>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    fontFamily: "Arial",
+    textAlign: "center",
+    backgroundColor: "#0b0f1a",
+    color: "white",
+    minHeight: "100vh",
+    padding: "20px",
+  },
+  box: {
+    background: "#1c2333",
+    padding: 20,
+    borderRadius: 10,
+    marginTop: 20,
+  },
+  logBox: {
+    marginTop: 20,
+    background: "#111827",
+    padding: 10,
+    borderRadius: 10,
+    textAlign: "left",
+  },
+};
